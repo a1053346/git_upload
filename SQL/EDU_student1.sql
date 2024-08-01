@@ -1,23 +1,23 @@
-create table COUNTRY (
+create table EDU_STUDENT.COUNTRY (
     COU_NO CHAR(8) primary key,
     COU_NM NVARCHAR2(20),
     COU_ADD NVARCHAR2(40),
     COU_TEL VARCHAR2(11)
 );
 
-create table POLICE (
+create table EDU_STUDENT.POLICE (
     POL_NO CHAR(8) primary key,
     POL_NM NVARCHAR2(20),
     POL_ADD NVARCHAR2(40),
     POL_TEL VARCHAR2(11)
 );
 
-create table CATEGORY (
+create table EDU_STUDENT.CATEGORY (
     CATE_NO CHAR(8) primary key,
     CATE_NM NVARCHAR2(20)
 );
 
-create table DEPARTMENT (
+create table EDU_STUDENT.DEPARTMENT (
     DE_NO CHAR(8) primary key,
     DE_CATE CHAR(8),
     COU_NO CHAR(8),
@@ -27,7 +27,7 @@ create table DEPARTMENT (
     POL_NO CHAR(8)
 );
 
-insert into COUNTRY values ('C001','¤j®H¨½','¦Ë«nÂí¤½¸q¸ô1035¸¹','03 758 1072');
+insert into EDU_STUDENT.COUNTRY values ('C001','¤j®H¨½','¦Ë«nÂí¤½¸q¸ô1035¸¹','03 758 1072');
 insert into COUNTRY values ('C002','¦Ë«n¨½','¦Ë«nÂí¦Ë«n¨½¤¤¤s¸ô103¸¹','03 747 2735');
 insert into COUNTRY values ('C003','¤s¨Î¨½','¦Ë«nÂí¤s¨Î¨½°ê¥úµó14¸¹','03 761 4186');
 insert into COUNTRY values ('C004','®H³»¨½','«áÀsÂí®H³»¨½¤¤¿³¸ô136-1¸¹','03 772 4839');
@@ -61,3 +61,13 @@ insert into DEPARTMENT values ('D010','G004','C007','­]®ß¿¤ÀY¥÷¥«©¾§µ©¾§µ¤@¸ô69¸
 insert into DEPARTMENT values ('D011','G001','C008','­]®ß¿¤ÀY¥÷¥««H¸q¨½¤¤¥¿¸ô65¸¹','194','1','M003');
 insert into DEPARTMENT values ('D012','G004','C008','­]®ß¿¤ÀY¥÷¥««H¸q¨½¤¤¥¿¸ô116¸¹','78','1','M003');
 commit;
+
+
+select distinct
+    PO.POL_NM,PO.POL_TEL,
+    count(DE.POL_NO) as DE_SUM
+from DEPARTMENT DE
+left join POLICE PO on PO.POL_NO = DE.POL_NO
+where DE.DE_PEOPLE > 1000
+group by PO.POL_NM,PO.POL_TEL
+;

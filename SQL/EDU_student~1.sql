@@ -36,55 +36,59 @@ commit;
 --4.1
 select distinct
     PO.POL_NM,PO.POL_TEL
-from DEPARTMENT DE
-left join POLICE PO on PO.POL_NO = DE.POL_NO
-where DE.DE_PEOPLE > 1000;
+ from DEPARTMENT DE
+ left join POLICE PO on PO.POL_NO = DE.POL_NO
+ where DE.DE_PEOPLE > 1000;
 
 --4.2
 select distinct
     PO.POL_NM,PO.POL_TEL,
     count(DE.POL_NO) over (partition by (DE.POL_NO)) as DE_SUM
+ from EDU_STUDENT.DEPARTMENT DE
+ left join EDU_STUDENT.POLICE PO on PO.POL_NO = DE.POL_NO
+ where DE.DE_PEOPLE > 1000;
+
+/*select distinct
+    PO.POL_NM,PO.POL_TEL,
+    count(DE.POL_NO) as DE_SUM
 from DEPARTMENT DE
 left join POLICE PO on PO.POL_NO = DE.POL_NO
 where DE.DE_PEOPLE > 1000
-;
-
+group by PO.POL_NM,PO.POL_TEL
+;*/
 --4.3
 select distinct
     PO.POL_NM,PO.POL_TEL,
     count(DE.POL_NO) over (partition by (DE.POL_NO)) as DE_SUM,
     DE.DE_ADD,
     CATE.CATE_NM
-from DEPARTMENT DE
-left join POLICE PO on PO.POL_NO = DE.POL_NO
-left join CATEGORY CATE on CATE.CATE_NO = DE.DE_CATE
-where DE.DE_PEOPLE > 1000
-;
+ from DEPARTMENT DE
+ left join POLICE PO on PO.POL_NO = DE.POL_NO
+ left join CATEGORY CATE on CATE.CATE_NO = DE.DE_CATE
+ where DE.DE_PEOPLE > 1000;
 
 --4.4
 select 
-    COU.COU_NM,DE.DE_ADD,DE.DE_PEOPLE,PO.POL_NM,PO.POL_TEL
-from DEPARTMENT DE
-left join POLICE PO on PO.POL_NO = DE.POL_NO
-left join COUNTRY COU on COU.COU_NO = DE.COU_NO
-where DE.DE_ADD like '%中%'
-;
+    COU.COU_NM, DE.DE_ADD, DE.DE_PEOPLE, PO.POL_NM, PO.POL_TEL
+ from DEPARTMENT DE
+ left join POLICE PO on PO.POL_NO = DE.POL_NO
+ left join COUNTRY COU on COU.COU_NO = DE.COU_NO
+ where DE.DE_ADD like '%中%';
 
 --4.5
 select 
     COU.COU_NM,COU.COU_ADD,DE.DE_ADD,DE.DE_PEOPLE
-from DEPARTMENT DE
-left join CATEGORY CATE on CATE.CATE_NO = DE.DE_CATE
-left join COUNTRY COU on COU.COU_NO = DE.COU_NO
-where DE.DE_CATE in ('G001','G002')
-;
+ from DEPARTMENT DE
+ left join CATEGORY CATE on CATE.CATE_NO = DE.DE_CATE
+ left join COUNTRY COU on COU.COU_NO = DE.COU_NO
+ where DE.DE_CATE in ('G001','G002');
 
 --5.1
 update DEPARTMENT
-set DE_PEOPLE = 5000
-where DE_ADD = '苗栗縣竹南鎮和平街79號';
+ set DE_PEOPLE = 5000
+ where DE_ADD = '苗栗縣竹南鎮和平街79號';
 commit;
 
 --5.2
 delete from DEPARTMENT
-where DE_PEOPLE < 1000;
+ where DE_PEOPLE < 1000;
