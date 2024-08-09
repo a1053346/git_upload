@@ -7,16 +7,18 @@ public class Employee implements IWork {
 	private int salary;
 
 	public Employee(String name, String department, int salary) {
-		this.name = name;
-		this.department = department;
-		this.salary = salary;
+		setName(name);
+		setDepartment(department);
+		setSalary(salary);
 	}
-	
+
 	@Override
 	public void printInfo() {
+		StringBuilder sb = new StringBuilder();
 		System.out.println("薪資單");
-		System.out.println("姓名：" + name + " 工作部門：" + department);
-		System.out.println("月薪：" + salary);
+		sb.append("姓名：").append(getName()).append(" 工作部門：").append(getDepartment());
+		System.out.println(sb); // 改stringbuilder
+		System.out.println("月薪：" + getSalary());
 	}
 
 	public String getName() {

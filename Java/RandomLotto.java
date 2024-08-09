@@ -20,14 +20,15 @@ public class RandomLotto {
 		randList.addAll(setList); // 把setList的數字放進List中
 		System.out.print("排序前：");
 
-		for (int i = 0; i < 6; i++) {
-			System.out.print(randList.get(i) + " ");
+		for (Integer i : randList) {
+			System.out.print(i + " ");
 		}
 		System.out.println();
 		System.out.print("排序後：");
 		Collections.sort(randList);
-		for (int i = 0; i < 6; i++) {
-			System.out.print(randList.get(i) + " ");
+
+		for (Integer i : randList) {
+			System.out.print(i + " ");
 		}
 	}
 

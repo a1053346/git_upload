@@ -27,6 +27,7 @@ public class Sales extends Employee {
 		this.payment = payment;
 	}
 
+	@Override
 	public void printInfo() {
 		super.printInfo();
 		System.out.println("業績獎金：" + bonus);

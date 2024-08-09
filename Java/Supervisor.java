@@ -16,6 +16,7 @@ public class Supervisor extends Employee {
 		this.payment = payment;
 	}
 
+	@Override
 	public void printInfo() {
 		super.printInfo();
 		System.out.println("總計：" + payment);

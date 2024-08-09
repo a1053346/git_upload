@@ -19,29 +19,24 @@ public class HRMain {
 			employee.printInfo();
 		}
 
-//		Employee emp1 = new Sales("aaa", "bbb", 35000, 6000);
-//		emp1.printInfo();
+		try (BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream("C:\\Users\\Admin\\Desktop\\Java班\\git_upload\\Java\\output.csv"),
+				StandardCharsets.UTF_8))) {
 
-		try {
-
-			BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(
-					new FileOutputStream("C:\\Users\\Admin\\Desktop\\Java班\\git_upload\\Java\\output.csv"),
-					StandardCharsets.UTF_8)); // 創BufferedWriter
 			bufferedWriter.write('\ufeff');
-			bufferedWriter.flush();
 
 			for (Employee emp : employeeList) {
+				StringBuilder sb = new StringBuilder();
 				if (emp instanceof Sales) { // 判斷資料是不是屬於Sales
 					Sales empSales = (Sales) emp; // 把emp轉型為Sales去拿取
-//					System.out.println(empSales.getPayment());
-					bufferedWriter.write(emp.getName() + "," + empSales.getPayment() + "\n"); // 寫入文件
+					sb.append(emp.getName()).append(",").append(empSales.getPayment()).append("\n");
+					bufferedWriter.write(sb.toString()); // 寫入文件 改stringbuilder
 				} else {
 					Supervisor empSupervisor = (Supervisor) emp;
-					bufferedWriter.write(emp.getName() + "," + empSupervisor.getPayment() + "\n"); // 寫入文件
+					sb.append(emp.getName()).append(",").append(empSupervisor.getPayment()).append("\n");
+					bufferedWriter.write(sb.toString()); // 寫入文件
 				}
-
 			}
-			bufferedWriter.close();// 關閉writer
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
