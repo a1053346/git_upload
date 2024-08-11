@@ -61,8 +61,35 @@ public class Cars {
 			Collections.sort(list, mapComparator);	
 
 			//寫檔
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream("C:\\Users\\Admin\\Desktop\\Java班\\git_upload\\Java\\cars2.csv")));
+			//把list的值取出來，先寫第一行欄位，再寫後面每一行
+			StringBuilder sb = new StringBuilder();
+			String lineSeparator = System.lineSeparator();
 			
-			//匯出
+			// keyA,keyB,keyC + nextLine
+			sb.append(String.join(",", keyList);
+			sb.append(lineSeparator); // nextLine
+
+			// valueA,valueB,valueC + nextLine
+			for (Map<String, String> thisData : resultList) {
+				// 每筆資料 for get value
+				StringBuilder lineSb = new StringBuilder();
+				// lineSb = ,valueA,valueB,valueC
+				for (String thisKey : keyList) { // 依照ketList順序，寫入value
+					String thisValue = thisData.get(thisKey);
+					lineSb.append(",").append(thisValue);
+				}
+				
+				lineSb = lineSb.subString(1); // remove first ","
+
+				// 放入sb
+				sb.append(lineSb.toString());
+				sb.append(lineSeparator);
+			}
+			
+			// 寫檔匯出
+			br.write(sb.toString());
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
