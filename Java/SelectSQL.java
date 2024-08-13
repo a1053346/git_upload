@@ -156,7 +156,6 @@ public class SelectSQL {
 			System.out.println("查詢失敗，原因：" + sqle.getMessage());
 		} catch (Exception e) {
 			System.out.println("查詢失敗，原因：" + e.getMessage());
-//			e.printStackTrace();
 		}
 	}
 
