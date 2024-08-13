@@ -24,7 +24,7 @@ public class SelectCalendar {
 		int daysOfMonth = c.getActualMaximum(Calendar.DAY_OF_MONTH); // 該月有幾天
 
 		for (int i = 0; i < firstDayOfWeek; i++) {
-			System.out.print("   "); // 印出月曆第一行的空格8
+			System.out.print("   "); // 印出月曆第一行的空格
 		}
 
 		for (int i = 1; i <= daysOfMonth; i++) {

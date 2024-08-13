@@ -41,10 +41,8 @@ public class Cars {
 					for (int i = 0; i < keyList.size(); i++) {
 						map.put(keyList.get(i), valueArr[i]);
 					}
-//					System.out.println(map);
 					resultList.add(map); // map放進list
 				}
-
 			}
 
 			// 用comparator排序price降冪
@@ -86,11 +84,11 @@ public class Cars {
 				// 放入sb
 				sb.append(lineSb.toString());
 				sb.append(lineSeparator);
-
 			}
-//			System.out.println(sb);
+
 			// 寫檔匯出
 			bw.write(sb.toString());
+			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -112,7 +110,7 @@ public class Cars {
 
 		// 印出第一行欄位
 		for (String strKey : keyList) {
-			sbTotal.append(strKey + " ");
+			sbTotal.append(String.format("%-15s", strKey));
 		}
 		sbTotal.append(lineSeparator);
 		// 印出每一筆資料
@@ -129,7 +127,8 @@ public class Cars {
 			// 檢查上一筆 preManufacturer 是否不同
 			if (preManufacturer != null && !preManufacturer.equals(manufacturer)) {
 				// 如果 Manufacturer 值變了，印出上個 Manufacturer 小計
-				sbTotal.append("小計         ").append(minPriceSum).append(" ").append(priceSum).append(lineSeparator);
+				sbTotal.append(String.format("%-30s", "小計")).append(String.format("%-15s", minPriceSum))
+						.append(String.format("%-15s", priceSum)).append(lineSeparator);
 				// 歸零
 				minPriceSum = BigDecimal.ZERO;
 				priceSum = BigDecimal.ZERO;
@@ -147,15 +146,17 @@ public class Cars {
 			// 每筆資料 for get value
 			for (String thisKey : keyList) { // 依照keyList順序，寫入value
 				String thisValue = thisData.get(thisKey);
-				sbTotal.append(thisValue).append(" ");
+				sbTotal.append(String.format("%-15s", thisValue));
 			}
 			sbTotal.append(lineSeparator);
 		}
 
 		// 印出最後一筆小計
-		sbTotal.append("小計         ").append(minPriceSum).append(" ").append(priceSum).append(lineSeparator);
+		sbTotal.append(String.format("%-30s", "小計")).append(String.format("%-15s", minPriceSum))
+				.append(String.format("%-15s", priceSum)).append(lineSeparator);
 		// 印出總和
-		sbTotal.append("總計         ").append(minPriceTotal).append(" ").append(priceTotal).append(lineSeparator);
+		sbTotal.append(String.format("%-30s", "總計")).append(String.format("%-15s", minPriceTotal))
+				.append(String.format("%-15s", priceTotal)).append(lineSeparator);
 
 		System.out.print(sbTotal.toString());
 
