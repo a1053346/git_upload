@@ -192,7 +192,7 @@ public class SelectSQL {
 
 			conn.commit();
 			System.out.println("新增成功");
-
+			pstmt.close();
 		} catch (Exception e) {
 			System.out.println("新增失敗，原因：" + e.getMessage());
 			try {
@@ -227,7 +227,7 @@ public class SelectSQL {
 
 			conn.commit();
 			System.out.println("更新成功");
-
+			pstmt.close();
 		} catch (Exception e) {
 			System.out.println("更新失敗，原因：" + e.getMessage());
 			try {
@@ -261,7 +261,7 @@ public class SelectSQL {
 
 			conn.commit();
 			System.out.println("刪除成功");
-
+			pstmt.close();
 		} catch (Exception e) {
 			System.out.println("刪除失敗，原因：" + e.getMessage());
 			try {
@@ -293,6 +293,7 @@ public class SelectSQL {
 			ResultSet rs = pstmt.executeQuery();
 			exist = rs.next();
 			rs.close();
+			
 		} catch (SQLException sqle) {
 			System.out.println("查詢失敗，原因：" + sqle.getMessage());
 		} catch (Exception e) {
