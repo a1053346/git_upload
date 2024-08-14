@@ -27,21 +27,16 @@ public class Cars {
 				new FileReader("C:\\Users\\Admin\\Desktop\\Java班\\git_upload\\Java\\cars.csv"))) {
 
 			String line = br.readLine();
-			boolean isFirst = true; // 第一次要執行，第二次後改為false
+			keyList = Arrays.asList(line.split(",")); // 第一行是欄位名，另存起來
 
-			while (line != null) { // 把每一行寫入string
-				Map<String, String> map = new HashMap<>();
-				if (isFirst) { // 第一行
-					keyList = Arrays.asList(line.split(",")); // 第一行是欄位名，另存起來，進下一行
-					isFirst = false; // 註記第一行結束
-				} else { // 第二行起，每一行放進map {欄位名,值}
-					String[] valueArr = line.split(","); // 取得值
-					// 遍歷key,建置map
-					for (int i = 0; i < keyList.size(); i++) {
-						map.put(keyList.get(i), valueArr[i]);
-					}
-					resultList.add(map); // map放進list
+			while ((line = br.readLine()) != null) { // 下一行開始寫入string 第二行起，每一行放進map {欄位名,值}
+				Map<String, String> map = new HashMap<>();				
+				String[] valueArr = line.split(","); // 取得值
+				// 遍歷key,建置map
+				for (int i = 0; i < keyList.size(); i++) {
+					map.put(keyList.get(i), valueArr[i]);
 				}
+				resultList.add(map); // map放進list
 			}
 
 			// 用comparator排序price降冪
