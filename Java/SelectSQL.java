@@ -48,6 +48,11 @@ public class SelectSQL {
 				String manuInsert = sc.next();
 				System.out.println("請輸入類別：");
 				String typeInsert = sc.next();
+				if (queryExist(manuInsert, typeInsert)) {
+					System.err.println("此筆資料已存在，請重新輸入");
+					return;
+				}
+
 				System.out.println("請輸入底價：");
 				String minPriceInsert = sc.next();
 				System.out.println("請輸入售價：");
@@ -66,6 +71,10 @@ public class SelectSQL {
 				String manuUpdate = sc.next();
 				System.out.println("請輸入類別：");
 				String typeUpdate = sc.next();
+				if (!queryExist(manuUpdate, typeUpdate)) {
+					System.err.println("此筆資料不存在，請重新輸入");
+					return;
+				}
 				System.out.println("請輸入更新後底價：");
 				String minPriceUpdate = sc.next();
 				System.out.println("請輸入更新後售價：");
@@ -84,6 +93,10 @@ public class SelectSQL {
 				String manuDelete = sc.next();
 				System.out.println("請輸入類別：");
 				String typeDelete = sc.next();
+				if (!queryExist(manuDelete, typeDelete)) {
+					System.err.println("此筆資料不存在，請重新輸入");
+					return;
+				}
 				delete(manuDelete, typeDelete);
 				break;
 
@@ -99,10 +112,8 @@ public class SelectSQL {
 		// 取得連線
 		// 寫入 SQL 指令
 		try (Connection conn = DriverManager.getConnection(CONN_URL, USER_NAME, PASSWORD);
-				PreparedStatement pstmt = conn.prepareStatement(SELECT_CARS_SQL);) {
-
-			// ResultSet物件儲存查詢結果
-			ResultSet rs = pstmt.executeQuery();
+				PreparedStatement pstmt = conn.prepareStatement(SELECT_CARS_SQL);
+				ResultSet rs = pstmt.executeQuery();) { // ResultSet物件儲存查詢結果
 
 			// 使用StringBuilder做字串串接
 			StringBuilder sb = new StringBuilder();
@@ -137,25 +148,28 @@ public class SelectSQL {
 		try (Connection conn = DriverManager.getConnection(CONN_URL, USER_NAME, PASSWORD);
 				PreparedStatement pstmt = conn
 						.prepareStatement("select * from STUDENT.CARS where MANUFACTURER = ? and TYPE = ?");) {
+
 			// setString 輸入的製造商、類別
 			pstmt.setString(1, manu);
 			pstmt.setString(2, type);
-
 			// ResultSet物件儲存查詢結果
 			ResultSet rs = pstmt.executeQuery();
+
 			StringBuilder sb = new StringBuilder();
 			sb.append("查詢結果： ").append(lineSeparator);
-			;
+
 			while (rs.next()) {
 				sb.append("製造商： ").append(rs.getString("MANUFACTURER")).append("，型號：").append(rs.getString("TYPE"))
 						.append("，售價：").append(rs.getString("PRICE")).append("，底價：").append(rs.getString("MIN_PRICE"));
 			}
 			System.out.println(sb.toString());
 
+			rs.close();
 		} catch (SQLException sqle) {
 			System.out.println("查詢失敗，原因：" + sqle.getMessage());
 		} catch (Exception e) {
 			System.out.println("查詢失敗，原因：" + e.getMessage());
+
 		}
 	}
 
@@ -172,6 +186,7 @@ public class SelectSQL {
 				pstmt.setString(2, map.get("TYPE"));
 				pstmt.setString(3, map.get("MIN_PRICE"));
 				pstmt.setString(4, map.get("PRICE"));
+
 				pstmt.executeUpdate();
 
 				conn.commit();
@@ -223,7 +238,7 @@ public class SelectSQL {
 	public static void delete(String manu, String type) {
 		try (Connection conn = DriverManager.getConnection(CONN_URL, USER_NAME, PASSWORD);) {
 			try {
-				// TODO
+
 				conn.setAutoCommit(false);
 				PreparedStatement pstmt = conn
 						.prepareStatement("delete from STUDENT.CARS where MANUFACTURER = ? and TYPE = ? ");
@@ -245,6 +260,27 @@ public class SelectSQL {
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 		}
+	}
+
+	public static Boolean queryExist(String manu, String type) {
+		Boolean exist = false;
+		try (Connection conn = DriverManager.getConnection(CONN_URL, USER_NAME, PASSWORD);
+				PreparedStatement pstmt = conn
+						.prepareStatement("select * from STUDENT.CARS where MANUFACTURER = ? and TYPE = ?");) {
+
+			// setString 輸入的製造商、類別
+			pstmt.setString(1, manu);
+			pstmt.setString(2, type);
+			// ResultSet物件儲存查詢結果
+			ResultSet rs = pstmt.executeQuery();
+			exist = rs.next();
+			rs.close();
+		} catch (SQLException sqle) {
+			System.out.println("查詢失敗，原因：" + sqle.getMessage());
+		} catch (Exception e) {
+			System.out.println("查詢失敗，原因：" + e.getMessage());
+		}
+		return exist;
 	}
 
 }
