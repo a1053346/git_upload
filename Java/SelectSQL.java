@@ -206,16 +206,13 @@ public class SelectSQL {
 				if (pstmt != null) {
 					pstmt.close();
 				}
-			} catch (SQLException sqle) {
-				sqle.printStackTrace();
-			}
-			try {
 				if (conn != null) {
 					conn.close();
 				}
 			} catch (SQLException sqle) {
 				sqle.printStackTrace();
 			}
+
 		}
 	}
 
@@ -248,10 +245,6 @@ public class SelectSQL {
 				if (pstmt != null) {
 					pstmt.close();
 				}
-			} catch (SQLException sqle) {
-				sqle.printStackTrace();
-			}
-			try {
 				if (conn != null) {
 					conn.close();
 				}
@@ -287,10 +280,6 @@ public class SelectSQL {
 				if (pstmt != null) {
 					pstmt.close();
 				}
-			} catch (SQLException sqle) {
-				sqle.printStackTrace();
-			}
-			try {
 				if (conn != null) {
 					conn.close();
 				}
