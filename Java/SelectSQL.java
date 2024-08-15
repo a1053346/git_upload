@@ -177,10 +177,11 @@ public class SelectSQL {
 	public static void insert(Map<String, String> map) {
 
 		Connection conn = null;
+		PreparedStatement pstmt = null;
 		try {
 			conn = DriverManager.getConnection(CONN_URL, USER_NAME, PASSWORD);
 			conn.setAutoCommit(false);
-			PreparedStatement pstmt = conn.prepareStatement(
+			pstmt = conn.prepareStatement(
 					"insert into STUDENT.CARS (MANUFACTURER, TYPE, MIN_PRICE, PRICE) values (?, ?, ?, ?)");
 
 			pstmt.setString(1, map.get("MANUFACTURER"));
@@ -192,7 +193,7 @@ public class SelectSQL {
 
 			conn.commit();
 			System.out.println("新增成功");
-			pstmt.close();
+
 		} catch (Exception e) {
 			System.out.println("新增失敗，原因：" + e.getMessage());
 			try {
@@ -201,6 +202,13 @@ public class SelectSQL {
 				System.out.println("rollback 失敗，原因：" + sqle.getMessage());
 			}
 		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
 			try {
 				if (conn != null) {
 					conn.close();
@@ -214,10 +222,11 @@ public class SelectSQL {
 //	丙、提供 method update(Map)：by PK (製造商 類別)。
 	public static void update(Map<String, String> map) {
 		Connection conn = null;
+		PreparedStatement pstmt = null;
 		try {
 			conn = DriverManager.getConnection(CONN_URL, USER_NAME, PASSWORD);
 			conn.setAutoCommit(false);
-			PreparedStatement pstmt = conn.prepareStatement(
+			pstmt = conn.prepareStatement(
 					"update STUDENT.CARS set MIN_PRICE = ? , PRICE = ? where MANUFACTURER = ? and TYPE = ?");
 			pstmt.setString(1, map.get("MIN_PRICE"));
 			pstmt.setString(2, map.get("PRICE"));
@@ -227,7 +236,6 @@ public class SelectSQL {
 
 			conn.commit();
 			System.out.println("更新成功");
-			pstmt.close();
 		} catch (Exception e) {
 			System.out.println("更新失敗，原因：" + e.getMessage());
 			try {
@@ -236,6 +244,13 @@ public class SelectSQL {
 				System.out.println("rollback 失敗，原因：" + sqle.getMessage());
 			}
 		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
 			try {
 				if (conn != null) {
 					conn.close();
@@ -249,19 +264,17 @@ public class SelectSQL {
 //	丁、提供 method delete(製造商，類別) by PK (製造商 類別)。
 	public static void delete(String manu, String type) {
 		Connection conn = null;
-
+		PreparedStatement pstmt = null;
 		try {
 			conn = DriverManager.getConnection(CONN_URL, USER_NAME, PASSWORD);
 			conn.setAutoCommit(false);
-			PreparedStatement pstmt = conn
-					.prepareStatement("delete from STUDENT.CARS where MANUFACTURER = ? and TYPE = ? ");
+			pstmt = conn.prepareStatement("delete from STUDENT.CARS where MANUFACTURER = ? and TYPE = ? ");
 			pstmt.setString(1, manu);
 			pstmt.setString(2, type);
 			pstmt.executeUpdate();
 
 			conn.commit();
 			System.out.println("刪除成功");
-			pstmt.close();
 		} catch (Exception e) {
 			System.out.println("刪除失敗，原因：" + e.getMessage());
 			try {
@@ -270,6 +283,13 @@ public class SelectSQL {
 				System.out.println("rollback 失敗，原因：" + sqle.getMessage());
 			}
 		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
 			try {
 				if (conn != null) {
 					conn.close();
@@ -293,7 +313,7 @@ public class SelectSQL {
 			ResultSet rs = pstmt.executeQuery();
 			exist = rs.next();
 			rs.close();
-			
+
 		} catch (SQLException sqle) {
 			System.out.println("查詢失敗，原因：" + sqle.getMessage());
 		} catch (Exception e) {
