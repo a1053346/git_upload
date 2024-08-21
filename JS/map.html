@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map</title>
+    <style>
+        div {
+            padding: 10px;
+        }
+
+        span {
+            width: 80px;
+            display: inline-block;
+        }
+
+        #border {
+            padding: 20px;
+            width: 300px;
+            border-top: 1px solid #000;
+            border-bottom: 1px solid #000;
+        }
+    </style>
+    <script type="text/javascript" src="HashMap.js"></script>
+    <script>
+        window.onload = function () {
+            let map = new HashMap();
+
+            document.getElementById('putBtn').addEventListener('click', function () {
+                let key = document.getElementById('key').value;
+                let value = document.getElementById('value').value;
+
+                if (key === '' || map.contains(key)) {
+                    alert('key值不可空白或重複了!');
+                    return;
+                }
+                map.put(key, value);
+                let keys = map.keys();  //所有key的陣列
+                let str = '';
+                for (let i = 0; i < keys.length; i++) {
+                    str += keys[i] + '：' + map.get(keys[i]) + '<br>';
+                }
+                document.getElementById('result').innerHTML = str;
+            });
+
+            document.getElementById('clearBtn').addEventListener('click', function () {
+                map.clear();
+                document.getElementById('key').value = '';
+                document.getElementById('value').value = '';
+                document.getElementById('result').innerHTML = '';
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <div>
+        <span>KEY</span>
+        <input type="text" name="" id="key">
+    </div>
+    <div>
+        <span> VALUE</span>
+        <input type="text" name="" id="value">
+    </div>
+    <br>
+    <div id="border">
+        <button type="button" id="putBtn">PUT</button>
+        <button type="button" id="clearBtn">CLEAR</button>
+    </div>
+    <br>
+    【RESULT】 <br>
+    <div id="result"></div>
+</body>
+
+</html>

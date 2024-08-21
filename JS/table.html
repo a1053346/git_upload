@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>製造商Table</title>
+    <style>
+        div {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 10px;
+        }
+    </style>
+    <script>
+        let dataArray = [];
+
+        window.onload = function () {
+            let manu = document.getElementById('manu');
+            let type = document.getElementById('type');
+            let minPrice = document.getElementById('minPrice');
+            let price = document.getElementById('price');
+
+            document.getElementById('addBtn').addEventListener('click', function () {
+                if (manu.value === '' || type.value === '') {
+                    alert('製造商與類別不可空白');
+                    return;
+                }
+
+                // 寫入data
+                let data = {};
+                data.manu = manu.value;
+                data.type = type.value;
+                data.minPrice = minPrice.value;
+                data.price = price.value;
+                dataArray.push(data);
+
+                showTable(); // 顯示資料
+                setTimeout("alert('新增成功')",1000);
+            });
+
+            document.getElementById('modifyBtn').addEventListener('click', function () {
+                //判斷是否radio有被選以及選中的radio
+                let radioArray = document.getElementsByName('radio');
+                for (const indexRadioArray in radioArray) {
+                    let dataRadioArray = radioArray[indexRadioArray];
+                    if (!dataRadioArray.checked) {
+                        alert('請選擇一筆資料做修改');
+                        return;
+                    }
+                    if (manu.value === '' || type.value === '') {
+                        alert('製造商與類別不可空白');
+                        return;
+                    }
+                    //找到要修改的是第幾筆資料，到dataArray去修改
+                    let newdata = dataArray[indexRadioArray]; //{}
+                    newdata.manu = manu.value;
+                    newdata.type = type.value;
+                    newdata.minPrice = minPrice.value;
+                    newdata.price = price.value;
+                    dataArray[indexRadioArray] = newdata;
+
+                    showTable();
+                    setTimeout("alert('修改成功')",1000);               
+                    return;
+                }
+            });
+
+            document.getElementById('clearBtn').addEventListener('click', function () {
+                manu.value = '';
+                type.value = '';
+                minPrice.value = '';
+                price.value = '';
+                let listTable = document.getElementById('dataTable');
+                listTable.innerHTML = '';
+
+            });
+
+        }
+        function showTable() {
+            // 先清空
+            let listTable = document.getElementById('dataTable');
+            listTable.innerHTML = '';
+            // 開始列出array資料
+            for (let index in dataArray) {
+                let indexData = dataArray[index];
+
+                //新增內容
+                let tr = document.createElement('tr');
+                let tdRadio = document.createElement('td');
+                let radioInput = document.createElement('input');
+                radioInput.setAttribute('type', 'radio');
+                radioInput.setAttribute('name', 'radio');
+                radioInput.addEventListener('click', function () {
+                    setInputBlock(indexData); // 放入輸入框
+                })
+                tdRadio.appendChild(radioInput);
+                tr.appendChild(tdRadio);
+
+                //放序號
+                let tdIndex = document.createElement('td');
+                tdIndex.innerHTML = parseInt(index) + 1;
+                tr.appendChild(tdIndex);
+
+                //放data
+                for (let key in indexData) {
+                    let td = document.createElement('td');
+                    let text = document.createTextNode(indexData[key]);
+                    td.appendChild(text);
+                    tr.appendChild(td);
+                }
+
+                //放刪除按鈕
+                let tdDrop = document.createElement('td');
+                let dropBtn = document.createElement('button');
+                dropBtn.setAttribute('type', 'button');
+                dropBtn.addEventListener('click', function () {
+                    deleteRowAndResetTable(index); // 呼叫刪除某列方法
+                    
+                });
+                dropBtn.innerHTML = '刪除';
+                tdDrop.appendChild(dropBtn);
+                tr.appendChild(tdDrop);
+
+                listTable.appendChild(tr);
+            }
+        }
+
+        //刪除該列
+        function deleteRowAndResetTable(removeIndex) {
+            //從array裡第index的位置開始刪除x個元素
+            dataArray.splice(removeIndex, 1);
+            showTable(dataArray);
+            setTimeout("alert('刪除成功')",1000);            
+        }
+
+        //放入輸入框
+        function setInputBlock(indexData) {
+            manu.value = indexData.manu;
+            type.value = indexData.type;
+            minPrice.value = indexData.minPrice;
+            price.value = indexData.price;
+        }
+
+
+    </script>
+</head>
+
+<body>
+    <div>
+        <table border="1">
+            <tr>
+                <td>製造商</td>
+                <td><input type="text" name="" id="manu"></td>
+                <td>類別</td>
+                <td><input type="text" name="" id="type"></td>
+            </tr>
+            <tr>
+                <td>底價</td>
+                <td><input type="text" name="" id="minPrice"></td>
+                <td>售價</td>
+                <td><input type="text" name="" id="price"></td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <button type="button" id="addBtn">新增</button>
+                    <button type="button" id="modifyBtn">修改</button>
+                    <button type="button" id="clearBtn">清空</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br>
+    <div>
+        <table id="list" border="1">
+            <thead id="thead">
+                <td></td>
+                <td>序號</td>
+                <td>製造商</td>
+                <td>類別</td>
+                <td>底價</td>
+                <td>售價</td>
+                <td></td>
+            </thead>
+            <tbody id="dataTable"></tbody>
+        </table>
+    </div>
+</body>
+
+</html>
