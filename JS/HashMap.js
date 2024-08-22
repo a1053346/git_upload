@@ -1,30 +1,24 @@
 
 var HashMap = function () {
-    let obj = {};
+    let map = {}; 
 
     return {
         put: function (k, v) {
-            obj[k] = v;
+            map[k] = v;
         },
         keys: function () {
-            const list = [];
-            for (let key in obj) {
-                list.push(key);
-            }
-            return list;
+            //Object.keys() 回傳一個陣列
+            return Object.keys(map);            
         },
         contains: function (k) {
-            if (obj[k]) {
-                return true;
-            } else {
-                return false;
-            }
+            //Array.includes()會判斷陣列是否包含特定的元素
+            return Object.keys(map).includes(k);
         },
         get: function (k) {
-            return obj[k];
+            return map[k];
         },
         clear: function () {
-            return obj = {};
+            return map = {};
         }
     };
 };
